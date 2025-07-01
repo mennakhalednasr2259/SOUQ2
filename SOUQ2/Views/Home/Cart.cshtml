@@ -1,0 +1,371 @@
+﻿@* @model List<SOUQ2.Models.Cart> *@
+
+@* @* @{ *@ 
+@* @*     ViewData["Title"] = "Cart"; *@ 
+@* @*     Layout = "~/Views/Shared/_Layout.cshtml"; *@ 
+@* @* } *@ 
+@* @{ *@
+@*     Layout = null; *@
+@* } *@
+
+@* <!DOCTYPE html> *@
+@* <html lang="en"> *@
+@* <head> *@
+@*     <meta charset="utf-8"> *@
+@*     <meta content="width=device-width, initial-scale=1.0" name="viewport"> *@
+@*     <title>@Model.Name - Product Details</title> *@
+
+@*     <link href="~/assets/img/favicon.png" rel="icon"> *@
+@*     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> *@
+
+@*     <link href="https://fonts.googleapis.com" rel="preconnect"> *@
+@*     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin> *@
+@*     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Raleway&display=swap" rel="stylesheet"> *@
+
+@*     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/css/main.css" rel="stylesheet"> *@
+@* </head> *@
+@* <body class="portfolio-details-page"> *@
+@*     <header id="header" class="header d-flex align-items-center fixed-top"> *@
+@*         <div class="container-fluid container-xl position-relative d-flex align-items-center"> *@
+
+@*             <a href="index.html" class="logo d-flex align-items-center me-auto"> *@
+@*                 <!-- Uncomment the line below if you also wish to use an image logo --> *@
+@*                 <!-- <img src="assets/img/logo.png" alt=""> --> *@
+@*                 <h1 class="sitename">SOUQ</h1> *@
+@*             </a> *@
+
+@*             <form class="d-flex mx-auto" style="width: 40%;" method="get" action="/Home/ProductSearch"> *@
+@*                 <input class="form-control me-2" type="search" name="xname" id="xname" placeholder="Search..." aria-label="Search"> *@
+@*                 <button class="btn btn-outline-light" type="submit">Search</button> *@
+@*             </form> *@
+
+@*             <nav id="navmenu" class="navmenu"> *@
+@*                 <ul> *@
+@*                     <li><a href="/home/index" class="active">Home</a></li> *@
+@*                     <li><a href="#services">Services</a></li> *@
+@*                     <li><a href="#portfolio">Portfolio</a></li> *@
+@*                     <li><a href="#contact">Contact</a></li> *@
+@*                     <!-- Cart Icon --> *@
+@*                     @inject SouqContext db *@
+
+@*                     @{ *@
+@*                         string userId = "1"; // مؤقت *@
+@*                         var cartCount = db.Carts.Where(c => c.Userid == userId).Sum(c => c.Qty) ?? 0; *@
+@*                     } *@
+
+@*                     <div class="cart-icon position-relative me-3"> *@
+@*                         <a href="/Home/Cart" class="text-white position-relative"> *@
+@*                             <i class="bi bi-cart3 fs-4"></i> *@
+@*                             <span id="cartCount" class="badge rounded-pill bg-danger">@cartCount</span> *@
+
+@*                         </a> *@
+@*                     </div> *@
+@*                 </ul> *@
+@*                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i> *@
+@*             </nav> *@
+
+@*             <a class="btn-getstarted" href="#about">Get Started</a> *@
+
+@*         </div> *@
+@*     </header> *@
+
+@* <section class="py-5"> *@
+@*     <div class="container"> *@
+@*         <h2 class="mb-4">🛒 Your Shopping Cart</h2> *@
+
+@*         @if (Model == null || Model.Count == 0) *@
+@*         { *@
+@*             <div class="alert alert-info text-center">Your cart is empty 😢</div> *@
+@*         } *@
+@*         else *@
+@*         { *@
+@*             <table class="cart-table"> *@
+@*                 <thead> *@
+@*                     <tr> *@
+@*                         <th>Product</th> *@
+@*                         <th>Price</th> *@
+@*                         <th>Qty</th> *@
+@*                         <th>Total</th> *@
+@*                         <th>Action</th> *@
+@*                     </tr> *@
+@*                 </thead> *@
+@*                 <tbody> *@
+@*                     @foreach (var item in Model) *@
+@*                     { *@
+@*                         <tr> *@
+@*                             <td>@item.Product?.Name</td> *@
+@*                             <td>@(item.Product?.Price ?? 0) EGP</td> *@
+@*                             <td>@(item.Qty ?? 0)</td> *@
+@*                             <td>@((item.Product?.Price ?? 0) * (item.Qty ?? 0)) EGP</td> *@
+@*                             <td> *@
+@*                                 <form method="post" asp-action="RemoveFromCart" asp-route-id="@item.Id" style="display:inline;"> *@
+@*                                     @Html.AntiForgeryToken() *@
+@*                                     <button type="submit" class="btn btn-danger btn-sm btn-remove">Remove</button> *@
+@*                                 </form> *@
+@*                             </td> *@
+@*                         </tr> *@
+@*                     } *@
+@*                 </tbody> *@
+@*                 <tfoot> *@
+@*                     <tr> *@
+@*                         <td colspan="3" class="text-end fw-bold">Total:</td> *@
+@*                         <td colspan="2" class="fw-bold"> *@
+@*                             @Model.Sum(x => (x.Product?.Price ?? 0) * (x.Qty ?? 0)) EGP *@
+@*                         </td> *@
+@*                     </tr> *@
+@*                 </tfoot> *@
+@*             </table> *@
+
+@*             <a href="/Home/Index" class="btn btn-outline-primary mt-3">Continue Shopping</a> *@
+@*             <a href="/Home/Checkout" class="btn btn-outline-primary mt-3 float-end">Checkout</a> *@
+@*         } *@
+@*     </div> *@
+@* </section> *@
+
+@* <style> *@
+@*     .cart-table { *@
+@*         width: 100%; *@
+@*         border-collapse: collapse; *@
+@*         font-family: var(--default-font); *@
+@*         color: var(--default-color); *@
+@*         background-color: var(--surface-color); *@
+@*         box-shadow: 0 0 15px rgb(88 70 249 / 0.1); *@
+@*         border-radius: 10px; *@
+@*         overflow: hidden; *@
+@*     } *@
+
+@*         .cart-table th, *@
+@*         .cart-table td { *@
+@*             padding: 1rem 1.5rem; *@
+@*             text-align: center; *@
+@*             border-bottom: 1px solid #e0e0e0; *@
+@*             font-size: 1rem; *@
+@*         } *@
+
+@*         .cart-table thead { *@
+@*             background-color: var(--accent-color); *@
+@*             color: var(--contrast-color); *@
+@*             font-family: var(--heading-font); *@
+@*             font-weight: 700; *@
+@*         } *@
+
+@*         .cart-table tbody tr:hover { *@
+@*             background-color: #f6f4ff; *@
+@*         } *@
+
+@*         .cart-table tbody tr:last-child td { *@
+@*             border-bottom: none; *@
+@*         } *@
+
+@*     .btn-remove { *@
+@*         background-color: var(--accent-color); *@
+@*         color: var(--contrast-color); *@
+@*         border: none; *@
+@*         padding: 0.4rem 0.8rem; *@
+@*         border-radius: 5px; *@
+@*         font-weight: 600; *@
+@*         cursor: pointer; *@
+@*         transition: background-color 0.3s ease; *@
+@*     } *@
+
+@*         .btn-remove:hover { *@
+@*             background-color: #4b39d9; *@
+@*         } *@
+
+@* </style> *@
+@*  @model List<SOUQ2.Models.Cart> *@
+@* @inject SouqContext db *@
+@* @{ *@
+@*     Layout = null; *@
+    
+@* } *@
+
+@* <!DOCTYPE html> *@
+@* <html lang="en"> *@
+@* <head> *@
+@*     <meta charset="utf-8"> *@
+@*     <meta content="width=device-width, initial-scale=1.0" name="viewport"> *@
+@*     <title>Cart</title> *@
+
+@*     <link href="~/assets/img/favicon.png" rel="icon"> *@
+@*     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> *@
+@*     <link href="https://fonts.googleapis.com" rel="preconnect"> *@
+@*     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin> *@
+@*     <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Raleway&display=swap" rel="stylesheet"> *@
+
+@*     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/aos/aos.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet"> *@
+@*     <link href="~/assets/css/main.css" rel="stylesheet"> *@
+@* </head> *@
+@* <body class="portfolio-details-page"> *@
+
+@*     <!-- Navbar --> *@
+@*     <header id="header" class="header d-flex align-items-center fixed-top"> *@
+@*         <div class="container-fluid container-xl position-relative d-flex align-items-center"> *@
+
+@*             <a href="index.html" class="logo d-flex align-items-center me-auto"> *@
+@*                 <!-- Uncomment the line below if you also wish to use an image logo --> *@
+@*                 <!-- <img src="assets/img/logo.png" alt=""> --> *@
+@*                 <h1 class="sitename">SOUQ</h1> *@
+@*             </a> *@
+
+@*             <form class="d-flex mx-auto" style="width: 40%;" method="get" action="/Home/ProductSearch"> *@
+@*                 <input class="form-control me-2" type="search" name="xname" id="xname" placeholder="Search..." aria-label="Search"> *@
+@*                 <button class="btn btn-outline-light" type="submit">Search</button> *@
+@*             </form> *@
+
+@*             <nav id="navmenu" class="navmenu"> *@
+@*                 <ul> *@
+@*                     <li><a href="/home/index" class="active">Home</a></li> *@
+@*                     <li><a href="#services">Services</a></li> *@
+@*                     <li><a href="#portfolio">Portfolio</a></li> *@
+@*                     <li><a href="#contact">Contact</a></li> *@
+@*                     <!-- Cart Icon --> *@
+@*                    <li> *@
+@*                        @inject SouqContext db *@
+
+@*                     @{ *@
+@*                         string userId = "1"; // مؤقت *@
+@*                         var cartCount = db.Carts.Where(c => c.Userid == userId).Sum(c => c.Qty) ?? 0; *@
+@*                     } *@
+
+@*                     <div class="cart-icon position-relative me-3"> *@
+@*                         <a href="/Home/Cart" class="text-white position-relative"> *@
+@*                             <i class="bi bi-cart3 fs-4"></i> *@
+@*                             <span id="cartCount" class="badge rounded-pill bg-danger">@cartCount</span> *@
+
+@*                         </a> *@
+@*                     </div></li> *@
+@*                 </ul> *@
+@*                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i> *@
+@*             </nav> *@
+
+@*             <a class="btn-getstarted" href="#about">Get Started</a> *@
+
+@*         </div> *@
+@*     </header> *@
+
+@*     <main class="main" style="margin-top: 100px;"> *@
+@*         <section class="py-5"> *@
+@*             <div class="container"> *@
+@*                 <h2 class="mb-4">🛒 Your Shopping Cart</h2> *@
+
+@*                 @if (Model == null || Model.Count == 0) *@
+@*                 { *@
+@*                     <div class="alert alert-info text-center">Your cart is empty 😢</div> *@
+@*                 } *@
+@*                 else *@
+@*                 { *@
+@*                     <table class="cart-table"> *@
+@*                         <thead> *@
+@*                             <tr> *@
+@*                                 <th>Product</th> *@
+@*                                 <th>Price</th> *@
+@*                                 <th>Qty</th> *@
+@*                                 <th>Total</th> *@
+@*                                 <th>Action</th> *@
+@*                             </tr> *@
+@*                         </thead> *@
+@*                         <tbody> *@
+@*                             @foreach (var item in Model) *@
+@*                             { *@
+@*                                 <tr> *@
+@*                                     <td>@item.Product?.Name</td> *@
+@*                                     <td>@(item.Product?.Price ?? 0) EGP</td> *@
+@*                                     <td>@(item.Qty ?? 0)</td> *@
+@*                                     <td>@((item.Product?.Price ?? 0) * (item.Qty ?? 0)) EGP</td> *@
+@*                                     <td> *@
+@*                                         <form method="post" asp-action="RemoveFromCart" asp-route-id="@item.Id" style="display:inline;"> *@
+@*                                             @Html.AntiForgeryToken() *@
+@*                                             <button type="submit" class="btn btn-danger btn-sm btn-remove">Remove</button> *@
+@*                                         </form> *@
+@*                                     </td> *@
+@*                                 </tr> *@
+@*                             } *@
+@*                         </tbody> *@
+@*                         <tfoot> *@
+@*                             <tr> *@
+@*                                 <td colspan="3" class="text-end fw-bold">Total:</td> *@
+@*                                 <td colspan="2" class="fw-bold"> *@
+@*                                     @Model.Sum(x => (x.Product?.Price ?? 0) * (x.Qty ?? 0)) EGP *@
+@*                                 </td> *@
+@*                             </tr> *@
+@*                         </tfoot> *@
+@*                     </table> *@
+
+@*                     <a href="/Home/Index" class="btn btn-outline-primary mt-3">Continue Shopping</a> *@
+@*                     <a href="/Home/Checkout" class="btn btn-outline-primary mt-3 float-end">Checkout</a> *@
+@*                 } *@
+@*             </div> *@
+@*         </section> *@
+@*     </main> *@
+
+@*     <!-- Footer --> *@
+@*     <footer id="footer" class="footer accent-background"> *@
+@*         <div class="container text-center mt-4"> *@
+@*             <p>© <span>@DateTime.Now.Year</span> <strong class="px-1 sitename">Techie</strong> - All Rights Reserved</p> *@
+@*         </div> *@
+@*     </footer> *@
+
+@*     <!-- Scripts --> *@
+@*     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> *@
+@*     <script src="~/assets/vendor/aos/aos.js"></script> *@
+@*     <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script> *@
+@*     <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script> *@
+@*     <script src="~/assets/js/main.js"></script> *@
+
+@*     <style> *@
+@*         .cart-table { *@
+@*             width: 100%; *@
+@*             border-collapse: collapse; *@
+@*             background-color: var(--surface-color); *@
+@*             box-shadow: 0 0 15px rgb(88 70 249 / 0.1); *@
+@*             border-radius: 10px; *@
+@*             overflow: hidden; *@
+@*         } *@
+
+@*             .cart-table th, *@
+@*             .cart-table td { *@
+@*                 padding: 1rem 1.5rem; *@
+@*                 text-align: center; *@
+@*                 border-bottom: 1px solid #e0e0e0; *@
+@*                 font-size: 1rem; *@
+@*             } *@
+
+@*             .cart-table thead { *@
+@*                 background-color: var(--accent-color); *@
+@*                 color: var(--contrast-color); *@
+@*                 font-weight: 700; *@
+@*             } *@
+
+@*             .cart-table tbody tr:hover { *@
+@*                 background-color: #f6f4ff; *@
+@*             } *@
+
+@*         .btn-remove { *@
+@*             background-color: var(--accent-color); *@
+@*             color: var(--contrast-color); *@
+@*             border: none; *@
+@*             padding: 0.4rem 0.8rem; *@
+@*             border-radius: 5px; *@
+@*             font-weight: 600; *@
+@*             cursor: pointer; *@
+@*             transition: background-color 0.3s ease; *@
+@*         } *@
+
+@*             .btn-remove:hover { *@
+@*                 background-color: #4b39d9; *@
+@*             } *@
+@*     </style> *@
+
+@* </body> *@
+@* </html> *@
+

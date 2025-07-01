@@ -1,0 +1,37 @@
+﻿@model List<SOUQ2.Models.Category>
+
+
+<!-- Categories Section -->
+<section id="Categories" class="Categories section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Categories</h2>
+        <p>Explore our various categories tailored to your needs.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- Categories Item 1 -->
+            @foreach (var item in Model)
+            {
+                <div class="col-xl-3 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center p-4 rounded shadow-sm bg-light h-100">
+                        <div class="icon mb-3">
+                            <i class="bi @item.Icon" style="font-size: 2rem; color: #6c63ff;"></i>
+                        </div>
+                        <div>
+                            <h4 class="title"><a href="/home/Product/@item.Id" class="stretched-link">@item.Name</a></h4>
+                            <p class="description">@item.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+    </div>
+
+</section><!-- /Categories Section -->

@@ -1,0 +1,227 @@
+﻿@model SOUQ2.ViewModels.HomeViewModel
+
+<!-- ====================== Services Section ====================== -->
+<section id="services" class="services section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+        <p>From order to delivery, we ensure quality service every step of the way.</p>
+    </div>
+
+    <div class="container">
+        <div class="row gy-4">
+            @foreach (var service in Model.Services)
+            {
+                <div class="col-xl-4 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-item d-flex">
+                        <div class="icon flex-shrink-0">
+                            <i class="bi @service.Icon"></i>
+                        </div>
+                        <div>
+                            <h4 class="title">
+                                <a >@service.Title</a>
+                            </h4>
+                            <p class="description">@service.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!------------------------- Categories Section ---------------------------->
+<section id="Categories" class="Categories section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Categories</h2>
+        <p>Explore our various categories tailored to your needs.</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- Categories Item 1 -->
+            @foreach (var item in Model.Categories)
+            {
+                <div class="col-xl-3 col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center p-4 rounded shadow-sm bg-light h-100">
+                        <div class="icon mb-3">
+                            <i class="bi @item.Icon" style="font-size: 2rem; color: #6c63ff;"></i>
+                        </div>
+                        <div>
+                            <h4 class="title"><a href="/home/Product/@item.Id" class="stretched-link">@item.Name</a></h4>
+                            <p class="description">@item.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+
+        </div>
+    </div>
+
+</section>
+<!-- /Categories Section -->
+
+
+<!-- ====================== Portfolio Section ====================== -->
+<section id="portfolio" class="portfolio section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Portfolio</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div>
+
+    <div class="container">
+        <!-- Filter Buttons -->
+        <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+            <li data-filter="*" class="filter-active">All</li>
+            @foreach (var category in Model.Categories)
+            {
+                <li data-filter=".cat-@category.Id">@category.Name</li>
+            }
+        </ul>
+
+        <!-- Portfolio Items -->
+        <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col-lg-4 col-md-6 portfolio-item cat-@product?.Cat?.Id">
+                    <div class="portfolio-content h-100">
+                        <a href="@Url.Content("~/assets/img/portfolio/" + product.Image)"
+                           data-gallery="portfolio-gallery-app" class="glightbox">
+                            <img src="@Url.Content("~/assets/img/portfolio/" + product.Image)"
+                                 class="img-fluid" alt="@product.Name" />
+                        </a>
+                        <div class="portfolio-info">
+                            <h4><a href="/Home/ProductDetails/@product.Id" title="More Details">@product.Name</a></h4>
+                            <p>@product.Description</p>
+                            <p><strong>Price:</strong> @product.Price EGP</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <section id="contact" class="contact section">
+
+        <!-- Section Title -->
+        <div class="container section-title aos-init aos-animate" data-aos="fade-up">
+            <h2>Contact</h2>
+            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        </div><!-- End Section Title -->
+
+        <div class="container aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="row gy-4">
+
+                <div class="col-lg-6">
+
+                    <div class="row gy-4">
+                        <div class="col-md-6">
+                            <div class="info-item aos-init aos-animate" data-aos="fade" data-aos-delay="200">
+                                <i class="bi bi-geo-alt"></i>
+                                <h3>Address</h3>
+                                <p>A108 Adam Street</p>
+                                <p>New York, NY 535022</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="col-md-6">
+                            <div class="info-item aos-init aos-animate" data-aos="fade" data-aos-delay="300">
+                                <i class="bi bi-telephone"></i>
+                                <h3>Call Us</h3>
+                                <p>+1 5589 55488 55</p>
+                                <p>+1 6678 254445 41</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="col-md-6">
+                            <div class="info-item aos-init aos-animate" data-aos="fade" data-aos-delay="400">
+                                <i class="bi bi-envelope"></i>
+                                <h3>Email Us</h3>
+                                <p>info@example.com</p>
+                                <p>contact@example.com</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                        <div class="col-md-6">
+                            <div class="info-item aos-init aos-animate" data-aos="fade" data-aos-delay="500">
+                                <i class="bi bi-clock"></i> 
+                                 <h3>Open Hours</h3> 
+
+                                 <p>available 24/7 to assist you with your orders</p>
+                            </div>
+                        </div><!-- End Info Item -->
+
+                    </div>
+                    @* available 24 /7 to assist you with your orders *@
+                </div>
+
+                <div class="col-lg-6">
+                    <form action="/Home/Sendreview" method="post" class="dotnet-email-form aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row gy-4">
+
+                            <div class="col-md-6">
+                                <input type="text" name="Name" class="form-control" placeholder="Your Name" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" name="Email" placeholder="Your Email" required>
+                            </div>
+
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="Subject" placeholder="Subject" required>
+                            </div>
+
+                            <div class="col-12">
+                                <textarea class="form-control" name="Description" rows="6" placeholder="Message" required></textarea>
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <div class="loading">Loading</div>
+                                <div class="error-message"></div>
+                                <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                                <button type="submit">Send Message</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Isotope Script -->
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var iso = new Isotope('.isotope-container', {
+                itemSelector: '.portfolio-item',
+                layoutMode: 'masonry'
+            });
+
+            var filterButtons = document.querySelectorAll('.portfolio-filters li');
+            filterButtons.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var filterValue = this.getAttribute('data-filter');
+                    iso.arrange({ filter: filterValue });
+
+                    filterButtons.forEach(b => b.classList.remove('filter-active'));
+                    this.classList.add('filter-active');
+                });
+            });
+        });
+    </script>
+</section>
+
+
+
+
+
